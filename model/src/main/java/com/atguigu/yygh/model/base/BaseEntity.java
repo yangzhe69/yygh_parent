@@ -21,7 +21,7 @@ public class BaseEntity implements Serializable {
     private Long id;
 
     @ApiModelProperty(value = "创建时间")
-    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss",timezone="GMT+8")
     @TableField("create_time")
     private Date createTime;
 
