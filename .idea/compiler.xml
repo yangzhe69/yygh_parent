@@ -8,6 +8,7 @@
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
         <module name="common_util" />
+        <module name="service_gateway" />
         <module name="service_user" />
         <module name="service_hosp_client" />
         <module name="rabbit_util" />
@@ -38,6 +39,7 @@
       <module name="service-util" options="-parameters" />
       <module name="service_cmn" options="-parameters" />
       <module name="service_cmn_client" options="-parameters" />
+      <module name="service_gateway" options="-parameters" />
       <module name="service_hosp_client" options="-parameters" />
       <module name="service_user" options="-parameters" />
       <module name="service_util" options="-parameters" />
