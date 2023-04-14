@@ -15,3 +15,15 @@ http://localhost:9998/
 
 ## nacos
 http://116.62.243.7:8848/nacos/
+
+## 其他
+
+### 短信 
+阿里云
+
+### 微信登录  
+OAuth2
+授权认证
+https://open.weixin.qq.com/cgi-bin/showdocument?action=dir_list&t=resource/res_list&verify=1&id=open1419316505&token=e547653f995d8f402704d5cb2945177dc8aa4e7e&lang=zh_CN
+
+
