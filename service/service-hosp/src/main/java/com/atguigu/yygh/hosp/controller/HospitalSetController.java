@@ -1,5 +1,6 @@
 package com.atguigu.yygh.hosp.controller;
 
+import com.atguigu.yygh.common.exception.YyghException;
 import com.atguigu.yygh.common.result.Result;
 import com.atguigu.yygh.common.utils.MD5;
 import com.atguigu.yygh.hosp.service.HospitalSetService;
@@ -20,43 +21,41 @@ import java.util.Random;
 @Api(tags = "医院设置管理")
 @RestController
 @RequestMapping("/admin/hosp/hospitalSet")
+//@CrossOrigin
 public class HospitalSetController {
 
+    //注入service
     @Autowired
     private HospitalSetService hospitalSetService;
 
+    // http://localhost:8201/admin/hosp/hospitalSet/findAll
 
-    //查询医院设置表里的所有信息
+    //1 查询医院设置表所有信息
     @ApiOperation(value = "获取所有医院设置")
     @GetMapping("findAll")
-    public Result findAllHosptial() {
+    public Result findAllHospitalSet() {
+        //调用service的方法
         List<HospitalSet> list = hospitalSetService.list();
-
         return Result.ok(list);
-
-
     }
 
-    //删除医院设置
+    //2 逻辑删除医院设置
     @ApiOperation(value = "逻辑删除医院设置")
     @DeleteMapping("{id}")
-    public Result deleteHospSet(@PathVariable Long id) {
+    public Result removeHospSet(@PathVariable Long id) {
         boolean flag = hospitalSetService.removeById(id);
-        if (flag) {
+        if(flag) {
             return Result.ok();
         } else {
             return Result.fail();
         }
     }
 
-    //条件查询分页
-
     //3 条件查询带分页
     @PostMapping("findPageHospSet/{current}/{limit}")
     public Result findPageHospSet(@PathVariable long current,
                                   @PathVariable long limit,
                                   @RequestBody(required = false) HospitalSetQueryVo hospitalSetQueryVo) {
-
         //创建page对象，传递当前页，每页记录数
         Page<HospitalSet> page = new Page<>(current,limit);
         //构建条件
@@ -75,10 +74,8 @@ public class HospitalSetController {
 
         //返回结果
         return Result.ok(pageHospitalSet);
-
     }
 
-    //添加医院设置
     //4 添加医院设置
     @PostMapping("saveHospitalSet")
     public Result saveHospitalSet(@RequestBody HospitalSet hospitalSet) {
@@ -95,7 +92,6 @@ public class HospitalSetController {
             return Result.fail();
         }
     }
-
 
     //5 根据id获取医院设置
     @GetMapping("getHospSet/{id}")
@@ -141,8 +137,8 @@ public class HospitalSetController {
         hospitalSetService.updateById(hospitalSet);
         return Result.ok();
     }
-    //9 发送签
-    // 名秘钥
+
+    //9 发送签名秘钥
     @PutMapping("sendKey/{id}")
     public Result lockHospitalSet(@PathVariable Long id) {
         HospitalSet hospitalSet = hospitalSetService.getById(id);
@@ -151,5 +147,4 @@ public class HospitalSetController {
         //TODO 发送短信
         return Result.ok();
     }
-
 }

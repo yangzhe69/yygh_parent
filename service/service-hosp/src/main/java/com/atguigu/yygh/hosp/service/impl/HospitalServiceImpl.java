@@ -11,67 +11,50 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.*;
 import org.springframework.stereotype.Service;
 
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @Service
 public class HospitalServiceImpl implements HospitalService {
 
     @Autowired
     private HospitalRepository hospitalRepository;
+
     @Autowired
     private DictFeignClient dictFeignClient;
 
     @Override
     public void save(Map<String, Object> paramMap) {
-
         //把参数map集合转换对象 Hospital
-        String string = JSONObject.toJSONString(paramMap);
-        Hospital hospital = JSONObject.parseObject(string, Hospital.class);
+        String mapString = JSONObject.toJSONString(paramMap);
+        Hospital hospital = JSONObject.parseObject(mapString, Hospital.class);
 
         //判断是否存在数据
-        final String hoscode = hospital.getHoscode();
+        String hoscode = hospital.getHoscode();
         Hospital hospitalExist = hospitalRepository.getHospitalByHoscode(hoscode);
 
         //如果存在，进行修改
-        if (hospitalExist != null) {
+        if(hospitalExist != null) {
             hospital.setStatus(hospitalExist.getStatus());
             hospital.setCreateTime(hospitalExist.getCreateTime());
             hospital.setUpdateTime(new Date());
             hospital.setIsDeleted(0);
-
             hospitalRepository.save(hospital);
-        } else {
-            //如果不存在，进行添加
+        } else {//如果不存在，进行添加
             hospital.setStatus(0);
             hospital.setCreateTime(new Date());
             hospital.setUpdateTime(new Date());
             hospital.setIsDeleted(0);
-
             hospitalRepository.save(hospital);
         }
-
-
     }
 
     @Override
     public Hospital getByHoscode(String hoscode) {
-        Hospital hospitalExist = hospitalRepository.getHospitalByHoscode(hoscode);
-        return hospitalExist;
-    }
-
-    //获取医院名称
-    @Override
-    public String getHospName(String hoscode) {
         Hospital hospital = hospitalRepository.getHospitalByHoscode(hoscode);
-        if(hospital != null) {
-            return hospital.getHosname();
-        }
-        return null;
+        return hospital;
     }
 
+    //医院列表(条件查询分页)
     @Override
     public Page<Hospital> selectHospPage(Integer page, Integer limit, HospitalQueryVo hospitalQueryVo) {
         //创建pageable对象
@@ -96,6 +79,7 @@ public class HospitalServiceImpl implements HospitalService {
         return pages;
     }
 
+    //更新医院上线状态
     @Override
     public void updateStatus(String id, Integer status) {
         //根据id查询医院信息
@@ -119,11 +103,20 @@ public class HospitalServiceImpl implements HospitalService {
         return result;
     }
 
+    //获取医院名称
+    @Override
+    public String getHospName(String hoscode) {
+        Hospital hospital = hospitalRepository.getHospitalByHoscode(hoscode);
+        if(hospital != null) {
+            return hospital.getHosname();
+        }
+        return null;
+    }
+
+    //根据医院名称查询
     @Override
     public List<Hospital> findByHosname(String hosname) {
-         List<Hospital> list = hospitalRepository.getHospitalByHosnameLike(hosname);
-
-        return list;
+        return hospitalRepository.findHospitalByHosnameLike(hosname);
     }
 
     //根据医院编号获取医院预约挂号详情
@@ -153,5 +146,4 @@ public class HospitalServiceImpl implements HospitalService {
         hospital.getParam().put("hostypeString",hostypeString);
         return hospital;
     }
-
 }

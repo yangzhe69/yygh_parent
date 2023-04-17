@@ -22,7 +22,13 @@ http://116.62.243.7:8848/nacos/
 ## 其他
 
 ### 短信 
-阿里云
+阿里云  service-msm
+
+### 阿里云OSS文件系统
+阿里云OSS   service-oss  
+对象存储
+
+
 
 ### 微信登录  
 OAuth2
