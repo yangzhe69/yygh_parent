@@ -9,6 +9,11 @@ liuyan
 https://www.bilibili.com/video/BV1V5411K7rT?p=125&spm_id_from=pageDriver&vd_source=0c666c102e27d8f3b37f99ac269b1d2b
 
 
+## 记录
+    生产微信支付二维码  WeixinController.createNative
+
+
+
 
 ## swagger
 http://localhost:8201/swagger-ui.html
